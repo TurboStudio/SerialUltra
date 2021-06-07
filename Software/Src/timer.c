@@ -1,7 +1,7 @@
 #include "STC8G.h"
 #include "intrins.h"
 #include "timer.h"
-//²âÊÔ¹¤×÷ÆµÂÊÎª11.0592MHz
+//æµ‹è¯•å·¥ä½œé¢‘ç‡ä¸º11.0592MHz
 volatile unsigned int millis;
 
 void TM0_Isr() interrupt 1
@@ -9,15 +9,15 @@ void TM0_Isr() interrupt 1
     millis++;                                 
 }
 
-void Timer_Init()																//ÅäÖÃ10ms¶¨Ê±Æ÷ÖĞ¶Ï	
+void Timer_Init()																//é…ç½®10mså®šæ—¶å™¨ä¸­æ–­	
 {
 		millis = 0;
 	
-    TMOD |= 0x00;                               //Ä£Ê½0
-    TL0 = 0x00;                                 //£¨65536-0xdc00£©*£¨1/11059200*12£©
+    TMOD |= 0x00;                               //æ¨¡å¼0
+    TL0 = 0x00;                                 //ï¼ˆ65536-0xdc00ï¼‰*ï¼ˆ1/11059200*12ï¼‰
     TH0 = 0xdc;
-    TR0 = 1;                                    //Æô¶¯¶¨Ê±Æ÷
-    ET0 = 1;                                    //Ê¹ÄÜ¶¨Ê±Æ÷ÖĞ¶Ï
+    TR0 = 1;                                    //å¯åŠ¨å®šæ—¶å™¨
+    ET0 = 1;                                    //ä½¿èƒ½å®šæ—¶å™¨ä¸­æ–­
 
 }
 

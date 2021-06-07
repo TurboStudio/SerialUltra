@@ -7,8 +7,8 @@ const char Head[3] = {'A','T','+'};
 const char Mode[5] = {'M','O','D','E','='};
 const char Dist[5] = {'D','I','S','T','='};
 	
-char Work_Mode = '0';																								//Ä£¿é¹¤×÷Ä£Ê½´æ´¢±äÁ¿  0:±»¶¯		1:Ö÷¶¯
-float feedback_dist = 0.0;																					//ÉÏ´«¾àÀë±äÁ¿
+char Work_Mode = '0';																								//æ¨¡å—å·¥ä½œæ¨¡å¼å­˜å‚¨å˜é‡  0:è¢«åŠ¨		1:ä¸»åŠ¨
+float feedback_dist = 0.0;																					//ä¸Šä¼ è·ç¦»å˜é‡
 
 CMD MODE_feedback = {
 	
@@ -24,7 +24,7 @@ DIST_CMD DIST_feedback = {
 	{0}
 };
 
-//ÃüÁî½âÎöº¯Êý
+//å‘½ä»¤è§£æžå‡½æ•°
 void ProcessMessage(pCMD msg)																			 
 {
 	
@@ -32,7 +32,7 @@ void ProcessMessage(pCMD msg)
 	{	
 		if(memcmp((msg->HEAD),Head,3) == 0)
 		{
-			if(memcmp((msg->CMD),Mode,5) == 0)													//Ä£¿é¹¤×÷Ä£Ê½ÉèÖÃ»ò¶ÁÈ¡
+			if(memcmp((msg->CMD),Mode,5) == 0)													//æ¨¡å—å·¥ä½œæ¨¡å¼è®¾ç½®æˆ–è¯»å–
 			{
 				if(msg->DATA == '?')
 				{
@@ -52,7 +52,7 @@ void ProcessMessage(pCMD msg)
 					UartSendStr("\r\n");
 				}
 			}
-			else if(memcmp((msg->CMD),Dist,5) == 0)											//±»¶¯Ä£Ê½ÏÂ¾àÀëÊý¾ÝÉÏ´«
+			else if(memcmp((msg->CMD),Dist,5) == 0)											//è¢«åŠ¨æ¨¡å¼ä¸‹è·ç¦»æ•°æ®ä¸Šä¼ 
 			{
 				if(msg->DATA == '?')
 				{

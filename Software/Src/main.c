@@ -6,7 +6,7 @@
 #include "stdio.h"
 #include "ultrasonic.h"
 
-//²âÊÔ¹¤×÷ÆµÂÊÎª11.0592MHz
+//æµ‹è¯•å·¥ä½œé¢‘çŽ‡ä¸º11.0592MHz
 
 void main()
 {
@@ -24,9 +24,9 @@ void main()
 		while(1)
 		{
 			
-			ProcessMessage((pCMD) uart_buffer);															//ÃüÁî½âÎö
+			ProcessMessage((pCMD) uart_buffer);															//å‘½ä»¤è§£æž
 			
-			if(Work_Mode == '1')																						//Ö÷¶¯ÉÏ´«Ä£Ê½
+			if(Work_Mode == '1')																						//ä¸»åŠ¨ä¸Šä¼ æ¨¡å¼
 				{
 					if((millis - lasttime) >=10)
 					{	

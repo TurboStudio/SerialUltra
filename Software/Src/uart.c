@@ -7,7 +7,7 @@ bit cmd_flag = 0;
 char count;
 char uart_buffer[11] = {0};
 
-//´®¿ÚÖĞ¶Ï·şÎñº¯Êı
+//ä¸²å£ä¸­æ–­æœåŠ¡å‡½æ•°
 void UartIsr() interrupt 4																						
 {
     if (TI)
@@ -28,7 +28,7 @@ void UartIsr() interrupt 4
     }
 }
 
-//´®¿Ú³õÊ¼»¯
+//ä¸²å£åˆå§‹åŒ–
 void UartInit()
 {
     SCON |= 0x50;
@@ -41,7 +41,7 @@ void UartInit()
     busy = 0;
 }
 
-//´®¿Ú·¢ËÍº¯Êı£¨×Ö·û£©
+//ä¸²å£å‘é€å‡½æ•°ï¼ˆå­—ç¬¦ï¼‰
 void UartSendChar(char dat)
 {
     while (busy);
@@ -49,7 +49,7 @@ void UartSendChar(char dat)
     SBUF = dat;
 }
 
-//´®¿Ú·¢ËÍº¯Êı£¨×Ö·û´®£©
+//ä¸²å£å‘é€å‡½æ•°ï¼ˆå­—ç¬¦ä¸²ï¼‰
 void UartSendStr(char *p)
 {
     while (*p)
