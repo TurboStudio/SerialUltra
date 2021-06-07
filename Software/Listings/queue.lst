@@ -1,0 +1,51 @@
+C51 COMPILER V9.01   QUEUE                                                                 06/06/2021 15:04:25 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE QUEUE
+OBJECT MODULE PLACED IN .\Objects\queue.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Src\queue.c LARGE WARNINGLEVEL(1) OPTIMIZE(9,SPEED) BROWSE INCDIR(.\Inc;
+                    -.\Src) DEBUG OBJECTEXTEND PRINT(.\Listings\queue.lst) TABS(2) OBJECT(.\Objects\queue.obj)
+
+line level    source
+
+   1          #include "queue.h"
+*** WARNING C318 IN LINE 1 OF Src\queue.c: can't open file 'queue.h'
+   2          
+   3          static uint32_t cmd_state = 0;                                         //串口屏队列帧尾检测状态
+*** ERROR C129 IN LINE 3 OF SRC\QUEUE.C: missing ';' before 'cmd_state'
+   4          static uint16_t cmd_pos = 0;                                           //串口屏当前指令指针位置
+   5          
+   6          /*
+   7           * 将串口接收的数据加入队列
+   8           */
+   9          void UART1_Queue_Push(uint8_t _data)
+  10          {
+  11              uint16_t pos = (UART1_RxMsg.head+1)%UART1_RxMsg_MAX_SIZE;
+  12              if(pos!=UART1_RxMsg.tail)                                                //非满状态
+  13              {
+  14                UART1_RxMsg.data[UART1_RxMsg.head] = _data;
+  15                UART1_RxMsg.head = pos;
+  16              }
+  17          }
+  18          
+  19          /*
+  20           * 从串口队列中取出一byte数据
+  21           */
+  22          static void UART1_Queue_Pop(uint8_t* _data)
+  23          {
+  24              if(UART1_RxMsg.tail!=UART1_RxMsg.head)                                          //非空状态
+  25              {
+  26                  *_data = UART1_RxMsg.data[UART1_RxMsg.tail];
+  27                  UART1_RxMsg.tail = (UART1_RxMsg.tail+1)%UART1_RxMsg_MAX_SIZE;
+  28              }
+  29          }
+  30          
+  31          /*
+  32           * 获取串口队列有效数据量
+  33           */
+  34          static uint16_t UART1_Queue_Size()
+  35          {
+  36              return ((UART1_RxMsg.head+UART1_RxMsg_MAX_SIZE-UART1_RxMsg.tail)%UART1_RxMsg_MAX_SIZE);
+  37          }
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  1 ERROR(S)

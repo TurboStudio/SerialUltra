@@ -1,0 +1,108 @@
+C51 COMPILER V9.01   CMD                                                                   06/06/2021 16:45:11 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE CMD
+OBJECT MODULE PLACED IN .\Objects\cmd.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Src\cmd.c LARGE WARNINGLEVEL(1) OPTIMIZE(9,SPEED) BROWSE INCDIR(.\Inc;.\
+                    -Src) DEBUG OBJECTEXTEND PRINT(.\Listings\cmd.lst) TABS(2) OBJECT(.\Objects\cmd.obj)
+
+line level    source
+
+   1          #include "cmd.h"
+*** WARNING C245 IN LINE 4 OF .\INC\CMD.H: unknown #pragma, line ignored
+*** WARNING C245 IN LINE 5 OF .\INC\CMD.H: unknown #pragma, line ignored
+*** WARNING C245 IN LINE 22 OF .\INC\CMD.H: unknown #pragma, line ignored
+   2          #include "uart.h"
+   3          #include "string.h"
+   4          #include "stdio.h"
+   5          
+   6          const char Head[3] = {'A','T','+'};
+   7          const char Mode[5] = {'M','O','D','E','='};
+   8          const char Dist[5] = {'D','I','S','T','='};
+   9            
+  10          char Work_Mode = '0';                                               //模块工作模式存储变量  0:被动    1:主动
+  11          float feedback_dist = 0.0;                                          //上传距离变量
+  12          
+  13          CMD MODE_feedback = {
+  14            
+  15            {'A','T','+'},
+  16            {'M','O','D','E','='},
+  17            '0',
+  18            '\0'
+  19          };
+  20          
+  21          DIST_CMD DIST_feedback = {
+  22            
+  23            {'D','i','s','t','='},
+  24            {0}
+  25          };
+  26          
+  27          //命令解析函数
+  28          void ProcessMessage(pCMD msg)                                      
+  29          {
+  30   1        
+  31   1        if(cmd_flag && ((uart_buffer[9] == '\r') || (uart_buffer[9] == '\n')))
+  32   1        { 
+  33   2          if(memcmp((msg->HEAD),Head,3) == 0)
+  34   2          {
+  35   3            if(memcmp((msg->CMD),Mode,5) == 0)                          //模块工作模式设置或读取
+  36   3            {
+  37   4              if(msg->DATA == '?')
+  38   4              {
+  39   5                MODE_feedback.DATA = Work_Mode;
+  40   5                UartSendStr((char*)&MODE_feedback); 
+  41   5                UartSendStr("\r\n");          
+  42   5              }
+  43   4              else if((msg->DATA == '0') || (msg->DATA == '1'))
+  44   4              {       
+  45   5                Work_Mode = msg->DATA;
+  46   5                UartSendStr("OK");
+  47   5                UartSendStr("\r\n");
+  48   5              }
+  49   4              else
+  50   4              {
+  51   5                UartSendStr("command error!");
+C51 COMPILER V9.01   CMD                                                                   06/06/2021 16:45:11 PAGE 2   
+
+  52   5                UartSendStr("\r\n");
+  53   5              }
+  54   4            }
+  55   3            else if(memcmp((msg->CMD),Dist,5) == 0)                     //被动模式下距离数据上传
+  56   3            {
+  57   4              if(msg->DATA == '?')
+  58   4              {
+  59   5                if(Work_Mode == '0')
+  60   5                {
+  61   6                  sprintf(DIST_feedback.buf,"%0.2f",feedback_dist);
+  62   6                  UartSendStr((char*)&DIST_feedback);
+  63   6                  UartSendStr("cm");
+  64   6                  UartSendStr("\r\n");
+  65   6                }
+  66   5              }
+  67   4              else
+  68   4              {
+  69   5                UartSendStr("command error!");
+  70   5                UartSendStr("\r\n");
+  71   5              }     
+  72   4            }else return;     
+  73   3          }else return;
+  74   2          
+  75   2          cmd_flag = 0; 
+  76   2          count = 0;
+  77   2        }
+  78   1            
+  79   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    298    ----
+   CONSTANT SIZE    =     30    ----
+   XDATA SIZE       =     53       3
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)
